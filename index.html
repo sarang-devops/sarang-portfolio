@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>haxxy.kali Portfolio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+body{
+margin:0;
+padding:0;
+height:100vh;
+overflow:hidden;
+background:url('https://www.kali.org/wallpapers/images/2026/kali-net.jpg') no-repeat center center fixed;
+background-size:cover;
+font-family:'JetBrains Mono',monospace;
+color:#00ff41;
+user-select:none;
+}
+
+#top-panel{
+position:fixed;
+top:0;left:0;right:0;
+height:34px;
+background:rgba(0,0,0,.95);
+border-bottom:1px solid #00ff41;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 10px;
+z-index:1000;
+color:#fff;
+font-size:13px;
+}
+
+#menu-container{position:relative}
+#menu-btn{padding:0 14px;cursor:pointer;height:34px;display:flex;align-items:center}
+#menu-btn:hover{background:rgba(0,255,65,.15)}
+
+#app-menu{
+display:none;
+position:absolute;
+top:34px;
+left:0;
+width:220px;
+background:#111;
+border:1px solid #00ff41;
+box-shadow:0 0 20px rgba(0,255,65,.4);
+}
+#app-menu div{padding:10px;cursor:pointer}
+#app-menu div:hover{background:rgba(0,255,65,.15)}
+#menu-container:hover #app-menu{display:block}
+
+#username{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+color:#00ff41;
+font-weight:bold;
+}
+
+#system-info{
+display:flex;
+gap:15px;
+align-items:center;
+margin-left:auto;
+}
+
+.icon{
+position:absolute;
+width:90px;
+text-align:center;
+color:#fff;
+text-shadow:0 2px 6px #000;
+cursor:pointer;
+padding:6px;
+border-radius:4px;
+}
+.icon img{width:56px;height:56px;margin-bottom:4px}
+.icon:hover{background:rgba(0,255,65,.2)}
+
+.window{
+position:absolute;
+background:#1e1e1e;
+border:2px solid #00ff41;
+display:none;
+flex-direction:column;
+width:500px;
+height:350px;
+}
+.title-bar{
+background:#0a0a0a;
+padding:6px 12px;
+display:flex;
+justify-content:space-between;
+border-bottom:1px solid #00ff41;
+cursor:move;
+}
+.content{padding:15px;overflow:auto;flex:1}
+.close-btn{cursor:pointer;color:#ff4444}
+</style>
+</head>
+<body>
+
+<div id="top-panel">
+  <div id="menu-container">
+    <div id="menu-btn">☰ Applications</div>
+    <div id="app-menu">
+      <div onclick="openWindow('cv')">CV</div>
+      <div onclick="openWindow('personal')">Personal</div>
+      <div onclick="openWindow('projects')">Projects</div>
+      <div onclick="openWindow('skills')">Skills</div>
+    </div>
+  </div>
+
+  <div id="username">haxxy.kali</div>
+
+  <div id="system-info">
+    <span id="wifi">📶 Online</span>
+    <span id="ram">RAM 34%</span>
+    <span id="cpu">CPU 21%</span>
+    <span id="battery">🔋100%</span>
+    <span id="clock"></span>
+  </div>
+</div>
+
+<div class="icon" style="top:60px;left:40px;" ondblclick="openWindow('cv')">
+<img src="https://i.pinimg.com/1200x/67/bc/45/67bc45b0d75f2f99b4a2a7f8383fe0f4.jpg"><br>CV.pdf
+</div>
+
+<div id="cv" class="window" style="top:80px;left:220px;">
+<div class="title-bar"><span>CV.pdf</span><span class="close-btn" onclick="closeWindow('cv')">✕</span></div>
+<div class="content">Embed your CV here.</div>
+</div>
+
+<div id="personal" class="window" style="top:120px;left:280px;">
+<div class="title-bar"><span>Personal</span><span class="close-btn" onclick="closeWindow('personal')">✕</span></div>
+<div class="content">Personal details window.</div>
+</div>
+
+<div id="projects" class="window" style="top:140px;left:320px;">
+<div class="title-bar"><span>Projects</span><span class="close-btn" onclick="closeWindow('projects')">✕</span></div>
+<div class="content">Projects window.</div>
+</div>
+
+<div id="skills" class="window" style="top:160px;left:360px;">
+<div class="title-bar"><span>Skills</span><span class="close-btn" onclick="closeWindow('skills')">✕</span></div>
+<div class="content">Skills window.</div>
+</div>
+
+<script>
+function updatePanel(){
+ const now=new Date();
+ document.getElementById('clock').textContent=now.toLocaleDateString()+" "+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+ document.getElementById('cpu').textContent='CPU '+(Math.floor(Math.random()*35)+10)+'%';
+ document.getElementById('ram').textContent='RAM '+(Math.floor(Math.random()*40)+20)+'%';
+}
+setInterval(updatePanel,1000); updatePanel();
+
+if('getBattery' in navigator){
+ navigator.getBattery().then(b=>{
+   function u(){document.getElementById('battery').textContent='🔋'+Math.round(b.level*100)+'%'}
+   u(); b.addEventListener('levelchange',u);
+ });
+}
+
+function openWindow(id){document.getElementById(id).style.display='flex'}
+function closeWindow(id){document.getElementById(id).style.display='none'}
+</script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>root@Sarang:~# Kali Linux</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: url('https://www.kali.org/wallpapers/images/2026/kali-net.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'VT323', monospace;
+  color: #00ff41;
+  user-select: none;
+}
+
+/* Top Panel */
+#top-panel {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom: 2px solid #00ff41;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  z-index: 1000;
+  color: white;
+  font-size: 14.5px;
+}
+#menu-btn { cursor: pointer; padding: 0 14px; }
+#menu-btn:hover { background: rgba(0,255,65,0.2); }
+#username { margin: 0 20px; color: #00ff41; }
+#clock, #system-info { margin-left: auto; padding: 0 8px; display: flex; gap: 12px; }
+
+/* Desktop Icons */
+.icon {
+  position: absolute;
+  width: 90px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 6px #000;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.icon:hover { background: rgba(0,255,65,0.2); transform: scale(1.05); }
+.icon img { width: 56px; height: 56px; margin-bottom: 4px; }
+
+/* Windows */
+.window {
+  position: absolute;
+  background: #1e1e1e;
+  border: 3px solid #00ff41;
+  box-shadow: 0 0 40px rgba(0,255,65,0.75);
+  display: none;
+  flex-direction: column;
+  min-width: 380px;
+  min-height: 340px;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 10;
+}
+.title-bar {
+  background: #0a0a0a;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  border-bottom: 2px solid #00ff41;
+}
+.close-btn {
+  color: #ff4444;
+  cursor: pointer;
+  font-size: 24px;
+}
+.content {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+.terminal {
+  background: #000;
+  color: #00ff41;
+  padding: 15px;
+  height: calc(100% - 50px);
+  overflow: auto;
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<!-- Top Kali Panel -->
+<div id="top-panel">
+  <div id="menu-btn" onclick="toggleMenu()">☰ Applications</div>
+  <div id="username">hay.kali</div>
+  <div id="system-info">
+    <span id="wifi">📶</span>
+    <span id="cpu">CPU: 23%</span>
+    <span id="clock"></span>
+  </div>
+</div>
+
+<div id="desktop">
+  <!-- Your chosen icons (unchanged) -->
+  <div class="icon" style="top:60px;left:40px;" ondblclick="openWindow('cv')">
+    <img src="https://i.pinimg.com/1200x/67/bc/45/67bc45b0d75f2f99b4a2a7f8383fe0f4.jpg"><br>CV.pdf
+  </div>
+  <div class="icon" style="top:180px;left:40px;" ondblclick="openWindow('personal')">
+    <img src="https://i.pinimg.com/736x/d9/7b/bb/d97bbb08017ac2309307f0822e63d082.jpg"><br>Personal
+  </div>
+  <div class="icon" style="top:300px;left:40px;" ondblclick="openWindow('projects')">
+    <img src="https://i.pinimg.com/1200x/2c/df/b8/2cdfb82d538b3fccf16159c8d157a4ad.jpg"><br>Projects
+  </div>
+  <div class="icon" style="top:420px;left:40px;" ondblclick="openWindow('achievements')">
+    <img src="https://i.pinimg.com/736x/18/88/dd/1888dd34b5e0f4c49c2f5f77f513eecc.jpg"><br>Achievements
+  </div>
+  <div class="icon" style="top:540px;left:40px;" ondblclick="openWindow('education')">
+    <img src="https://i.pinimg.com/1200x/c8/28/80/c828803a06a762e5dc1d42b62901faa9.jpg"><br>Education
+  </div>
+  <div class="icon" style="top:60px;left:160px;" ondblclick="openWindow('skills')">
+    <img src="https://i.pinimg.com/736x/d0/a3/78/d0a378a6ea464b7f858f90cd868ba341.jpg"><br>Skills
+  </div>
+  <div class="icon" style="top:180px;left:160px;" ondblclick="openWindow('terminal')">
+    <img src="https://i.pinimg.com/736x/34/45/39/3445398fce4d303a2c3692a7d43c6591.jpg"><br>Terminal
+  </div>
+</div>
+
+<!-- All Windows -->
+<div id="cv" class="window" style="top:80px; left:220px; width:780px; height:580px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>CV.pdf</span>
+    <span class="close-btn" onclick="closeWindow('cv')">✕</span>
+  </div>
+  <div class="content" style="padding:0;">
+    <iframe src="/home/workdir/attachments/Sarang's CV 2-2.pdf" width="100%" height="100%" style="border:none;"></iframe>
+  </div>
+</div>
+
+<div id="personal" class="window" style="top:120px; left:280px; width:480px; height:400px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>Personal Details</span>
+    <span class="close-btn" onclick="closeWindow('personal')">✕</span>
+  </div>
+  <div class="content">
+    <h3>Sarang P Anoop</h3>
+    <p><strong>Email:</strong> sarangsrruthy4@gmail.com</p>
+    <p><strong>Mobile:</strong> +91-9037107364</p>
+    <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/sarangpanoop" target="_blank">linkedin.com/in/sarangpanoop</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/saxxnggg" target="_blank">github.com/saxxnggg</a></p>
+    <p><strong>Current Status:</strong> BCA (Hons. Cybersecurity) Student</p>
+  </div>
+</div>
+
+<div id="projects" class="window" style="top:100px; left:320px; width:620px; height:480px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>Projects</span>
+    <span class="close-btn" onclick="closeWindow('projects')">✕</span>
+  </div>
+  <div class="content">
+    <h3>Minecraft Automation Framework</h3>
+    <p><strong>Node.js + Mineflayer</strong></p>
+    <ul>
+      <li>10+ lightweight bots with protocol-level emulation</li>
+      <li>Anti-cheat compatibility using behavioral mimicry</li>
+      <li>Multi-bot coordination & low resource usage</li>
+    </ul>
+    <h3>Food Connect</h3>
+    <p>Surplus food donation platform</p>
+  </div>
+</div>
+
+<div id="achievements" class="window" style="top:160px; left:380px; width:460px; height:340px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>Achievements</span>
+    <span class="close-btn" onclick="closeWindow('achievements')">✕</span>
+  </div>
+  <div class="content">
+    <ul>
+      <li>9th Rank – HACKAI 2.0 Hackathon (LPU)</li>
+      <li>Cisco Cybersecurity & Networking Certificates</li>
+      <li>Deloitte Cyber Job Simulation</li>
+    </ul>
+  </div>
+</div>
+
+<div id="education" class="window" style="top:140px; left:460px; width:520px; height:390px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>Education</span>
+    <span class="close-btn" onclick="closeWindow('education')">✕</span>
+  </div>
+  <div class="content">
+    <p><strong>BCA (Hons. Cybersecurity)</strong><br>Lovely Professional University, Punjab<br>Aug 2024 – Present</p>
+    <p><strong>Intermediate (83%)</strong><br>SN.Trust HSS Natilkka, Kerala (2018-2020)</p>
+    <p><strong>Matriculation (92%)</strong><br>HS Anthikad, Kerala (2016-2018)</p>
+  </div>
+</div>
+
+<div id="skills" class="window" style="top:200px; left:280px; width:460px; height:370px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>Skills</span>
+    <span class="close-btn" onclick="closeWindow('skills')">✕</span>
+  </div>
+  <div class="content">
+    <ul>
+      <li><strong>Languages:</strong> C, C++, Java, Python, JavaScript/Node.js</li>
+      <li><strong>Cybersecurity:</strong> Networking, Protocol Reverse Engineering, Anti-Cheat</li>
+      <li><strong>Web:</strong> HTML5, CSS3, TailwindCSS</li>
+      <li><strong>Tools:</strong> Git, Linux, MySQL, Mineflayer</li>
+    </ul>
+  </div>
+</div>
+
+<div id="terminal" class="window" style="top:80px; left:220px; width:700px; height:490px;">
+  <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+    <span>root@Sarang:~/portfolio</span>
+    <span class="close-btn" onclick="closeWindow('terminal')">✕</span>
+  </div>
+  <div class="terminal" id="term-output">
+Welcome to Sarang's Kali Portfolio<br>
+Type <span style="color:#ffff00">help</span> for commands.<br><br>
+  </div>
+  <div style="background:#000; padding:6px 12px; border-top:1px solid #00ff41;">
+    <span>&gt;</span> 
+    <input id="term-input" style="background:transparent;border:none;color:#00ff41;font-family:inherit;font-size:16px;outline:none;width:90%;" 
+           onkeydown="if(event.key==='Enter') handleCommand(this.value); this.value='';">
+  </div>
+</div>
+
+<script>
+// Clock + Fake System Info
+setInterval(() => {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  // Fake CPU usage
+  const cpu = Math.floor(Math.random() * 30) + 15;
+  document.getElementById('cpu').textContent = `CPU: ${cpu}%`;
+}, 2000);
+
+// Menu
+function toggleMenu() {
+  alert("Kali Applications\n\n• Terminal Emulator\n• File Manager\n• Projects\n• CV.pdf\n• Skills\n• Education\n• Achievements\n• Browser");
+}
+
+// Window Functions
+function openWindow(id) {
+  const win = document.getElementById(id);
+  win.style.display = 'flex';
+  document.querySelectorAll('.window').forEach(w => w.style.zIndex = 5);
+  win.style.zIndex = 100;
+}
+function closeWindow(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+// Drag
+let dragElement, offsetX, offsetY;
+function dragStart(e, el) {
+  dragElement = el;
+  const rect = el.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+  document.onmousemove = dragMove;
+  document.onmouseup = () => { document.onmousemove = null; };
+}
+function dragMove(e) {
+  if (dragElement) {
+    dragElement.style.left = (e.clientX - offsetX) + 'px';
+    dragElement.style.top = (e.clientY - offsetY) + 'px';
+  }
+}
+
+// Simple Terminal
+function handleCommand(cmd) {
+  const output = document.getElementById('term-output');
+  output.innerHTML += `&gt; ${cmd}<br>`;
+  const lower = cmd.toLowerCase().trim();
+  if (lower === 'help') output.innerHTML += 'help, whoami, projects, skills, cv, clear<br>';
+  else if (lower === 'whoami') output.innerHTML += 'hay.kali - Cybersecurity Student & Developer<br>';
+  else if (lower === 'projects') { output.innerHTML += 'Opening Projects...<br>'; openWindow('projects'); }
+  else if (lower === 'clear') output.innerHTML = '';
+  else output.innerHTML += 'Command not found. Type help<br>';
+  output.scrollTop = output.scrollHeight;
+}
+</script>
+</body>
+</html>
